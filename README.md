@@ -53,6 +53,7 @@ With the system completely built and the OS installed, the next step is to begin
   * **Configure Displays and GPUs**
 ### 3. **Setting Up Ethereum Mining Tools**
   * **Build and Install CMake**
+  ./bootstrap --prefix=/usr/local --system-curl
   * **Build and Install Ethminer**
   * **Install Ethereum Wallet**
   * **Benchmark the system and Start Mining**
