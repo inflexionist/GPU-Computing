@@ -42,17 +42,73 @@ In order to get OpenCL 1.2 to run on my system, I needed to go all the way back 
 With the system completely built and the OS installed, the next step is to beginning adding the required software components necessary to run the GPUs and build the computing environment.  There are many website providing instructions on how to install the FGLRX drivers but these were the ones I found most useful.  Hopefully this saves some time.  I have taken the most streamlined approach I could find to get you to the end point but the procedures came from these resources.
 
 * https://help.ubuntu.com/community/BinaryDriverHowto/AMD
+* https://help.ubuntu.com/community/RadeonDriver
+* https://help.ubuntu.com/community/AMDGPU-Driver
+* https://www.x.org/wiki/RadeonFeature/
+* https://wiki.archlinux.org/index.php/ATI
+
 
 
   * **Install Extras and Utilities**
-  Install git wget curl libcurl4-openssl-dev clinfo glmark2 linux-headers-generic g++ mesa-common-dev
-  
+      
+    ```sudo apt-get install git wget curl libcurl4-openssl-dev clinfo glmark2 linux-headers-generic g++ mesa-common-dev gksu```
   
   * **Install Dependancies**
+  
+    Update the repositories in the usual fashion
+    ```sudo apt-get update```
+    ```sudo apt-get install linux-headers-generic```
+    
+
+        
   * **Install Legacy FGLRX Driver**
+    
+    Incase you are like me and you have tried many different times to get these drivers to work.  I recommend working on a fresh install of Ubuntu 14.04 since it really needs to be brought all the way back to 14.04.1 but in case for some reason you need to, any previous installations of FGLRX should be removed with this command.  
+    
+    ```sudo apt-get purge fglrx*```
+    
+    Install the FGLRX driver stack and configuration tool.  The AMD control center was rolled into the main FGLRX package in 14.04.
+    
+    ```sudo apt-get install fglrx```
+    
+    Install the hardware acceleration packages
+    
+    ```sudo apt-get install xvba-va-driver libva-glx1 libva-egl1 vainfo```
+    
+    Once all the driver packages are installed, the GPU(s) need to be initialized with the following command.  This command will create a back-up of your existing xorg.conf which can read using `cat /etc/X11/xorg.conf`.
+    
+    | HW Configuration | Command |
+    |------------------|--------|
+    | Single GPU | `sudo amdconfig --initial` |
+    | Multiple GPUs | `sudo amdconfig adapter=all --initial`|
+    
+    ```sudo reboot```
+    
   * **Configure Displays and GPUs**
+  
+    I had some problems with the xorg.conf reverting back to the original for some reason when I followed this procedure and had to repeat the configuration step more than once.  I finally was able to make it work by renaming xorg.conf to something else like xorg.new.conf prior to the reboot then renaming it afterward to xorg.conf.  Not sure why it wouldn't take but the workaround got it done for me.  Without it the AMD control center will not be able to detect the displays.  
+    
+    Once everything is installed and the initial configuration set through xorg.conf, any other GPUs can be tested using the AMD configuration tool.  It can be launced from the Unity or run from the command line using the gksu package.
+    
+    ```gksudo amdcccle```
+    
+    If you are trying to mine a cryptocurrency with this hardware it is unlikely you will want to actually use these GPU for displaying a gui so make sure that they are disabled as outputs.  You can verify the graphics card and drive functionality by running some of the video benchmarking tools like `glxgears` or running `glmark2` (if you want to test at fullscreen resolution use `glmark2 --fulscreen`)
+  
 ### 3. **Setting Up Ethereum Mining Tools**
+Before moving on to setting up the mining tools you should verify that the environment is set up properly for OpenCL.  To use ethminer 0.9.0+ you will need to make sure that you are running OpenCL 1.2 or better.  this can be checked by running
+
+```clinfo```
+
+this output should appear in your output or something went wrong
+
+|      |       |
+|------|-------|
+|Name:	| Tahiti |
+|Vendor: | Advanced Micro Devices, Inc. |
+|Device OpenCL C version:	|	OpenCL C 1.2 |
+
   * **Build and Install CMake**
+  
   ./bootstrap --prefix=/usr/local --system-curl
   * **Build and Install Ethminer**
   * **Install Ethereum Wallet**
