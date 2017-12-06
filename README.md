@@ -1,6 +1,3 @@
-# This Guide is Currently Under Development
-I appologize for the incompleteness of this guide for those of you struggling to get this working.  I am trying hard to get it done.
-
 # GPU-Computing On Ubuntu with Legacy Hardware
 This guide presents information on setting up Legacy AMD hardware and drivers on Ubuntu for GPU computing and Cryptocurency Mining and collects what I feel are the best links for relevant and accurate information based on my experience.
 
@@ -214,6 +211,6 @@ this output should appear in your output or something went wrong
   
   Where X is the Device ID from the `ethminer --list-devices` output.  this command accepts a comma separated list of devices (e.g. 1,2...).  If you have a mix of NVIDIA and/or AMD GPUs it will be necessary to use the `--opencl-platform` and `--cuda-plaform` and `--cuda-device`.  If you use NVIDIA hardware the `-U` flag is also required instead of the `-G` flag.
 
-## Building a GPGPU System on Ubuntu 16.04
+
 
 
