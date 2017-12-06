@@ -98,7 +98,7 @@ With the system completely built and the OS installed, the next step is to begin
 Before moving on to setting up the mining tools you should verify that the environment is set up properly for OpenCL.  To use ethminer 0.9.0+ you will need to make sure that you are running OpenCL 1.2 or better.  this can be checked by running
 
     
-    ```clinfo```
+```clinfo```
     
 
 this output should appear in your output or something went wrong
@@ -121,46 +121,46 @@ this output should appear in your output or something went wrong
   
   To start, [download the source code for the latest version of CMake](https://cmake.org/download/) and extract the tar.gz file into a build directory.
   
-      ```mkdir ~/CMake Build``` 
+  ```mkdir ~/CMake Build``` 
   
   (this directory will contain the contents of the extracted tar.gz)
   
-      ```cd ~/CMake Build```
+  ```cd ~/CMake Build```
   
-      ```./bootstrap --prefix=/usr/local --system-curl``` 
+  ```./bootstrap --prefix=/usr/local --system-curl``` 
   
   (not sure if the additional options are required but it seems to be good pracice)
   
-      ```make```
+  ```make```
   
-      ```make install```
+  ```make install```
   
   Before you know it you will have a version CMake which is capable of building the Ethereum Tools
   
   * **Build and Install Ethminer**
   Detailed instructions for building Ethminer from source can be found [here](https://github.com/ethereum-mining/ethminer). Start by cloning the Etheminer repository on Git or download the zip for the latest version.  Just like with CMake, create a directory to build it in and move the contents of the zip file into that directory.
   
-      ```mk ~/Ethminer Build```
+  ```mk ~/Ethminer Build```
   
   (this directory will contain the contents of the extracted zip)
   
-      ```cd ~/Ethminer Build```
+  ```cd ~/Ethminer Build```
   
-      ```cmake .```
+  ```cmake .```
   
   (this is actually different than the directions on the Ethminer Git Repository.  The instructions there tell you to enter ".." not "." which will ask CMake to look to configure the wrong directory if you have navigated to the build directory as the instruction tell you to do.
   
-      ```make --build .```
+  ```make --build .```
   
   (Note the single "." again if you get an error referencing the lack of a directory this is your problem)
   
-      ```sudo make install```
+  ```sudo make install```
   
   Even though sudo is used I still had to manually add the ethminer executable to /usr/bin to be able to run it from the command line.  Otherwise you will need to execute it from the directory where it resides
   
   Once it is built and installed you can verify the installation and that it can find the GPUs by using the following command
   
-      ```ethminer --list-devices```
+  ```ethminer --list-devices```
   
   The each instance of GPU hardware should appear in the output.
   
@@ -172,29 +172,29 @@ this output should appear in your output or something went wrong
   
   After trying several times and not really knowing what was going on I decided to use the `geth` commandline tool.  Geth can be used to start syncing in fast mode.  I recommend running this command in `teminator` terminal as it allows for windowed terminals which makes things easier to monitor but obviously any terminal will work.
   
-      ```geth --syncmode=fast --cache=1024```
+  ```geth --syncmode=fast --cache=1024```
   
   Higher RAM can allow a larger cache=2048 and presumably increase the speed further but I have not tested this.  Once geth is running fast mode can be verified by entering the following command in a separate terminal:
   
-      ```ps ux | grep geth```
+  ```ps ux | grep geth```
   
   If syncing is going in fast mode the output will include the --fast flag and also indicate the cache size.
   
   There is not a user friendly way to tell from the Geth output how far along the progress is but geth provides a Javascript console environment which can be accessed by entering this in the command line.
   
-      ```geth --attach```
+  ```geth --attach```
   
   Once in the javascript console these commands can be helpful in interrogating the progress:
   
-      ```eth.syncing```        (will output serveral values to show you the current state)
+  ```eth.syncing```        (will output serveral values to show you the current state)
   
-      ```eth.syncing.currentBlock```   (Will output the current block being synced)
+  ```eth.syncing.currentBlock```   (Will output the current block being synced)
   
-      ```eth.syncing.highestBlock```   (Will output the final block in the chain when syncing was started)
+  ```eth.syncing.highestBlock```   (Will output the final block in the chain when syncing was started)
   
   These commands can be access from the BASH commandline using a geth inline command using `geth --exec "[command]" attach`.  Entering the following command in the **command line** will allow you to get a continuously polling progress that gives a % Complete number that is constantly updating.  IMO this give confidence that nothing has hung up and things are progressing as they should which can reduce the frustration of the process.  In a new terminal enter this command:
   
-      ```while (( $(geth --exec "eth.syncing.highestBlock-eth.syncing.currentBlock" attach) > 0)); do echo $(geth --exec "100 * eth.syncing.currentBlock / eth.syncing.highestBlock" attach) % Complete; done```
+  ```while (( $(geth --exec "eth.syncing.highestBlock-eth.syncing.currentBlock" attach) > 0)); do echo $(geth --exec "100 * eth.syncing.currentBlock / eth.syncing.highestBlock" attach) % Complete; done```
 
   
   
