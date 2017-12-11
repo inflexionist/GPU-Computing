@@ -212,5 +212,5 @@ this output should appear in your output or something went wrong
   Where X is the Device ID from the `ethminer --list-devices` output.  this command accepts a comma separated list of devices (e.g. 1,2...).  If you have a mix of NVIDIA and/or AMD GPUs it will be necessary to use the `--opencl-platform` and `--cuda-plaform` and `--cuda-device`.  If you use NVIDIA hardware the `-U` flag is also required instead of the `-G` flag.
 
 
-
+while (( $(geth --exec "eth.syncing.highestBlock-eth.syncing.currentBlock" attach) > 0)); do echo $(geth --exec "100 * eth.syncing.currentBlock / eth.syncing.highestBlock" attach) % Complete; done
 
