@@ -77,7 +77,7 @@ With the system completely built and the OS installed, the next step is to begin
     | HW Configuration | Command |
     |------------------|--------|
     | Single GPU | `sudo amdconfig --initial` |
-    | Multiple GPUs | `sudo amdconfig adapter=all --initial`|
+    | Multiple GPUs | `sudo amdconfig --adapter=all --initial`|
     
     ```sudo reboot```
     
